@@ -9,6 +9,9 @@ def main():
 
     controller.connect_to_network(Config.WIFI_SSID, Config.WIFI_PASSWORD)
 
+    if controller.wlan.isconnected():
+        print(controller.get_wlan_config())
+
 
 if __name__ == "__main__":
     main()

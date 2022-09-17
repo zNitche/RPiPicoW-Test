@@ -12,11 +12,17 @@ class Controller:
 
         self.toggle_onboard_led(True)
 
+        self.print_debug_logs = True
+
+    def print_debug(self, content):
+        if self.print_debug_logs:
+            print(content)
+
     def toggle_onboard_led(self, state):
         self.onboard_led.on() if state else self.onboard_led.off()
 
     def init_wlan(self):
-        print("WLAN init...")
+        self.print_debug("WLAN init...")
 
         wlan = network.WLAN(network.STA_IF)
         wlan.active(True)
@@ -25,7 +31,7 @@ class Controller:
 
     def activate_wlan_if_disabled(self):
         if not self.wlan.active():
-            print("Enabling WLAN interface...")
+            self.print_debug("Enabling WLAN interface...")
 
             self.wlan.active(True)
 
@@ -34,10 +40,10 @@ class Controller:
 
         self.activate_wlan_if_disabled()
 
-        print("Connecting to WIFI network...")
+        self.print_debug("Connecting to WIFI network...")
 
         while not self.wlan.isconnected() and attempts < Config.MAX_WIFI_RECONNECT_ATTEMPTS:
-            print("Trying to establish WiFi connection...")
+            self.print_debug("Trying to establish WiFi connection...")
 
             self.wlan.connect(ssid, password)
 
@@ -45,7 +51,8 @@ class Controller:
 
             attempts += 1
 
-        print(f"Connected to '{ssid}' network...") if self.wlan.isconnected() else print("Failed to connect...")
+        self.print_debug(f"Connected to '{ssid}' network...") if self.wlan.isconnected() else \
+            self.print_debug("Failed to connect...")
 
     def get_wlan_config(self):
         config = None
@@ -56,7 +63,7 @@ class Controller:
         return config
 
     def get_wifi_networks(self):
-        print("Getting wifi networks...")
+        self.print_debug("Getting wifi networks...")
 
         self.activate_wlan_if_disabled()
 
