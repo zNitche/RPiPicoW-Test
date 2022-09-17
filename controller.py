@@ -6,13 +6,13 @@ from config import Config
 
 class Controller:
     def __init__(self):
+        self.print_debug_logs = True
+
         self.wlan = self.init_wlan()
 
         self.onboard_led = machine.Pin("LED", machine.Pin.OUT)
 
         self.toggle_onboard_led(True)
-
-        self.print_debug_logs = True
 
     def print_debug(self, content):
         if self.print_debug_logs:
